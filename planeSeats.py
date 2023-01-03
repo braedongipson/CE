@@ -66,6 +66,8 @@ def maxFamilies(seats):
         the seats their codes '1A' and whether or not they are reserved: (reserved == 'x', available == ' ')
     output: int 
         number of 4 person families that can be seated
+    Time complexity: O(s*m) where s is the number of columns in a section being checked and m is the number of rows
+    Space complexity: O(n * m)
     '''
     num_families = 0
     for i in range(1, NUM_ROWS+1):
