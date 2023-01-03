@@ -4,10 +4,10 @@ but should the code be adaptable to more diverse situations?
 • Is it better to sacrifice readability of the code for scalibility?
 • What time complexity should I be targeting for this 
 
-Assumptions you made:
+Assumptions I made:
 •The seat codes provided will be within the 1A through 5K range that the plane has with 'I' ommited
 
-The different paths or solutions you contemplated
+The different paths or solutions I contemplated
 •Use 2d dictionary to store the reserved seats. iterate throught the string of reserved seats and look them up in the dictionary,
   check the area around them to see how many people could be seated in the row. If a row number doesnt appear in the list, add 2 to the 
   families count and dont check it
