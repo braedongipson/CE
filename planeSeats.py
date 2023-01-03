@@ -1,7 +1,13 @@
 #Braedon Gipson
 #January 2, 2023
 
-default = 10 #max amount of 4 person families that could fit on the plane with no reservations
+DEFAULT = 10 #max amount of 4 person families that could fit on the plane with no reservations
+NUM_ROWS = 5
+LEFT_SECTION_START = 1
+LEFT_SECTION_END = 3
+PLANE_MIDDLE = 5
+RIGHT_SECTION_START = 7
+RIGHT_SECTION_END = 9
 colLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'] #The Letters representing the columns in the plane seating
 
 def reserve(input):
@@ -17,7 +23,7 @@ def reserve(input):
         number of 4 person families that can be seated
     '''
     if input == "":
-        return default
+        return DEFAULT
     input =  processString(input)
 
     taken_seats = []
@@ -25,13 +31,13 @@ def reserve(input):
         taken_seats.append(''.join(input[i:i+2]))
     seats = {}
 
-    for i in range (1, 6):
+    for i in range (1, NUM_ROWS+1):
         seats[i] = {}
         for c in colLetters:
             if str(i) + c in taken_seats:
                 seats[i][c] = 'x'
             else:
-                seats[i][c] = 'o'
+                seats[i][c] = ' '
     
     return maxFamilies(seats)
 
@@ -62,24 +68,25 @@ def maxFamilies(seats):
         number of 4 person families that can be seated
     '''
     num_families = 0
-    for i in range(1, 6):
+    for i in range(1, NUM_ROWS+1):
         #check middle section D E F G
-        
-        middle_section = seats[i][colLetters[3]] + seats[i][colLetters[4]] + seats[i][colLetters[5]] + seats[i][colLetters[6]]
+        middle_section = [str(seats[i][colLetters[n]]) for n in range(LEFT_SECTION_END, RIGHT_SECTION_START)]
+        middle_section = ''.join(middle_section)
+
         if('x' in middle_section): #a middle seat is reserved
-            if ('x' in (seats[i][colLetters[5]],seats[i][colLetters[6]])): #if F or G are reserved check for B C D E
-                left = seats[i][colLetters[1]] + seats[i][colLetters[2]] + seats[i][colLetters[3]] + seats[i][colLetters[4]]
+            if ('x' in ''.join([str(seats[i][colLetters[n]]) for n in range(PLANE_MIDDLE, RIGHT_SECTION_START)])): #if F or G are reserved check for B C D E
+                left = ''.join([str(seats[i][colLetters[n]]) for n in range(LEFT_SECTION_START, PLANE_MIDDLE)])
                 if 'x' not in left:
                     num_families += 1
                     continue
             else:  #if D or E are reserved check for F G H J
-                right = seats[i][colLetters[5]] + seats[i][colLetters[6]] + seats[i][colLetters[7]] + seats[i][colLetters[8]]
+                right = ''.join([str(seats[i][colLetters[n]]) for n in range(PLANE_MIDDLE, RIGHT_SECTION_END)])
                 if 'x' not in right:
                     num_families += 1
                     continue
         else: #if middle section is clear check B C and H J
-            left = seats[i][colLetters[1]] + seats[i][colLetters[2]]
-            right = seats[i][colLetters[7]] + seats[i][colLetters[3]]
+            left = ''.join([str(seats[i][colLetters[n]]) for n in range(LEFT_SECTION_START, LEFT_SECTION_END)])
+            right = ''.join([str(seats[i][colLetters[n]]) for n in range(RIGHT_SECTION_START, RIGHT_SECTION_END)])
             if ( 'x' not in left and 'x' not in right): #If if both are clear... +2 families 
                 num_families += 2 
             else:
@@ -91,3 +98,5 @@ if __name__ == "__main__":
     print(reserve("")) 
     print(reserve("5E 5F 4E 4F 3E 3F 2E 2F 1E 1F"))
     print(reserve("1B 1E 3A 3D 2H 4C 4E 5E"))
+    print(reserve("1D 1E 1F 1G"))
+    print(reserve("1B 1C 1D 1E"))
