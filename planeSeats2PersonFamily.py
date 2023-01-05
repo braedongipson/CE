@@ -5,13 +5,15 @@ DEFAULT = 20 #max amount of 4 person families that could fit on the plane with n
 NUM_ROWS = 5
 LEFT_SECTION_END = 3
 RIGHT_SECTION_START = 7
+FIRSTROWEND = 2
+SECONDROWEND = 6
+THIRDROWEND = 9
 colLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'] #The Letters representing the columns in the plane seating
 
 def reserve(input):
     ''' Takes a string containing the seats that are reserved
     Uses MaxFamilies() method to return the maximum number of 2 person families that can be seated on the plane with the given reservations
     if the string is empty returns 10
-
     Parameters
     ----------
     input : str, required
@@ -78,11 +80,10 @@ def maxFamilies(seats, selected_rows):
     for i in selected_rows:
         if all([seats[(i,colLetters[n])] for n in range(LEFT_SECTION_END, RIGHT_SECTION_START)]):
             num_families += 2
-        num_families += checkNext(seats,i, 0, 2) + checkNext(seats,i, 3, 6) + checkNext(seats,i, 7, 9)
+        num_families += checkNext(seats,i, 0, FIRSTROWEND) + checkNext(seats,i, FIRSTROWEND+1, SECONDROWEND) + checkNext(seats,i, SECONDROWEND+1, THIRDROWEND)
     return num_families
 
 
 if __name__ == "__main__":
    print(reserve("1A 2F 1C 3E 4F 5H"))
    print(reserve(""))
-
